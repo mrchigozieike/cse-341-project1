@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "mongodb": "^6.9.0",
+    "mongodg": "^0.1.0",
     "nodemon": "^3.1.5"
   },
   "name": "cse341-ww-student-code-w01-2-team-frontendstart",
