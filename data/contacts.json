@@ -1,0 +1,25 @@
+[{
+    "_id": {
+      "$oid": "61a921f6028954d4f0319e6d"
+    },
+    "Contact_id": 1,
+    "additionalInfo": false,
+    "firstName": "Chigozie",
+    "LastName": "Congo",
+    "email": "mrchigozieike@gmail.com",   
+    "favouriteColor": "Red",
+    "dateOfBirth": "22 DECEMBER 2000"
+   },
+   {
+    "_id": {
+      "$oid": "61a921f6028954d4f0319e7d"
+    },
+    "Contact_id": 2,
+    "additionalInfo": false,
+    "firstName": "Henry",
+    "LastName": "Obi",
+    "email": "mrchigozieike@gmail.com",
+    "favouriteColor": "Blue",
+    "dateOfBirth": "22 DECEMBER 2005"
+   }
+  ]
