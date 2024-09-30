@@ -20,6 +20,10 @@ const getSingle = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
         
+
+
+        
+        
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(result); // Return the found user
     } catch (error) {
