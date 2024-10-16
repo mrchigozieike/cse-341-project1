@@ -1,43 +1,43 @@
 const mongodb = require('../data/database');
 const ObjectId = require('mongodb').ObjectId;
+const createError = require('http-errors');
 
 // Get all contacts
-const getAll = async (req, res) => {
+const getAll = async (req, res, next) => {
     try {
         const result = await mongodb.getDatabase().db().collection('contacts').find();
         result.toArray().then((contacts) => {
-            
             res.setHeader('Content-Type', 'application/json');
             res.status(200).json(contacts);
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(createError(500, error.message)); // Pass error to the error handler
     }
 };
 
 // Get a single contact by ID
-const getSingle = async (req, res) => {
+const getSingle = async (req, res, next) => {
     try {
         const contactId = new ObjectId(req.params.id);
         const result = await mongodb.getDatabase().db().collection('contacts').findOne({ _id: contactId });
 
         if (!result) {
-            return res.status(404).json({ message: 'Contact not found' });
+            return next(createError(404, 'Contact not found'));
         }
 
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(result);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(createError(500, error.message)); // Pass error to the error handler
     }
 };
 
 // Create a new contact
-const createContact = async (req, res) => {
+const createContact = async (req, res, next) => {
     const { firstName, lastName, email, favoriteColor, birthday } = req.body;
 
     if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
-        return res.status(400).json({ message: 'All fields are required' });
+        return next(createError(400, 'All fields are required'));
     }
 
     try {
@@ -52,12 +52,12 @@ const createContact = async (req, res) => {
         const result = await mongodb.getDatabase().db().collection('contacts').insertOne(contact);
         res.status(201).json({ contactId: result.insertedId });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(createError(500, error.message)); // Pass error to the error handler
     }
 };
 
 // Update an existing contact by ID
-const updateContact = async (req, res) => {
+const updateContact = async (req, res, next) => {
     const contactId = new ObjectId(req.params.id);
     const updates = req.body;
 
@@ -68,29 +68,29 @@ const updateContact = async (req, res) => {
         );
 
         if (result.matchedCount === 0) {
-            return res.status(404).json({ message: 'Contact not found' });
+            return next(createError(404, 'Contact not found'));
         }
 
         res.status(200).json({ message: 'Contact updated successfully' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(createError(500, error.message)); // Pass error to the error handler
     }
 };
 
 // Delete a contact by ID
-const deleteContact = async (req, res) => {
+const deleteContact = async (req, res, next) => {
     const contactId = new ObjectId(req.params.id);
 
     try {
         const result = await mongodb.getDatabase().db().collection('contacts').deleteOne({ _id: contactId });
 
         if (result.deletedCount === 0) {
-            return res.status(404).json({ message: 'Contact not found' });
+            return next(createError(404, 'Contact not found'));
         }
 
         res.status(204).send();  // No content on success
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(createError(500, error.message)); // Pass error to the error handler
     }
 };
 
